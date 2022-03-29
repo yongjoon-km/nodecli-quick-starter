@@ -4,7 +4,7 @@ import figlet from 'figlet';
 
 import chalkAnimation from 'chalk-animation';
 import axios from 'axios';
-import path from 'path';
+import path, { resolve } from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 
@@ -35,6 +35,12 @@ try {
     console.log('error')
 }
 
+// baseDir = demo
+// groupId = com.example
+// artifactId = demo
+// name = demo
+// packageName groupId + artifactId
+
 const rainbow = chalkAnimation.rainbow('Installing...');
 rainbow.start();
 
@@ -45,11 +51,19 @@ const response = await axios({
 })
 
 const localFilePath = path.resolve(process.cwd(), '.', 'starter.zip');
-const w = response.data.pipe(fs.createWriteStream(localFilePath))
+const writeStream = response.data.pipe(fs.createWriteStream(localFilePath))
 
-w.on('finish', () => {
-    console.log('DONE');
-    console.log('Please check', chalk.green('starter.zip'));
-    
-    // unzip
-});
+function download(writeStream) {
+    return new Promise((res, rej) => {
+        writeStream.on('finish', () => {
+            res('done')
+        })
+        writeStream.on('error', (error) => {
+            console.log(error)
+            rej('error')
+        })
+    })
+}
+
+await download(writeStream)
+console.log('starter.zip is installed');
