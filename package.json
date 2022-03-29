@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "adm-zip": "^0.5.9",
     "axios": "^0.26.1",
     "chalk": "^5.0.1",
     "chalk-animation": "^1.6.0",

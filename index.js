@@ -7,6 +7,7 @@ import axios from 'axios';
 import path, { resolve } from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import admZip from 'adm-zip'
 
 // dependencies https://start.spring.io/dependencies
 
@@ -41,17 +42,20 @@ try {
 // name = demo
 // packageName groupId + artifactId
 
-const rainbow = chalkAnimation.rainbow('Installing...');
-rainbow.start();
+// TODO Recieve name for the project
+let projectName = 'demo'
+const zipFileName = 'starter.zip'
+
+chalkAnimation.rainbow('Installing...').start()
 
 const response = await axios({
     method: 'GET',
-    url: 'https://start.spring.io/starter.zip',
+    url: `https://start.spring.io/${zipFileName}`,
     responseType: 'stream'
 })
 
-const localFilePath = path.resolve(process.cwd(), '.', 'starter.zip');
-const writeStream = response.data.pipe(fs.createWriteStream(localFilePath))
+const zipFilePath = path.resolve(process.cwd(), '.', zipFileName);
+const writeStream = response.data.pipe(fs.createWriteStream(zipFilePath))
 
 function download(writeStream) {
     return new Promise((res, rej) => {
@@ -66,4 +70,16 @@ function download(writeStream) {
 }
 
 await download(writeStream)
-console.log('starter.zip is installed');
+console.log(`${zipFileName} is installed`);
+
+const unzipper = new admZip(zipFileName);
+chalkAnimation.rainbow('Unzipping...').start()
+unzipper.extractAllTo(projectName, true);
+console.log('finished unzip');
+fs.unlink(zipFilePath, (err) => {
+    if (err) {
+        console.log(err)
+        return
+    }
+    console.log(`removed ${zipFileName}`)
+});
