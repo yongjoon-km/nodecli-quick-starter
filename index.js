@@ -8,8 +8,16 @@ import path, { resolve } from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import admZip from 'adm-zip'
+import { program } from 'commander'
 
 // dependencies https://start.spring.io/dependencies
+
+program
+    .option('-n, --name <name>', 'name of the project');
+
+program.parse()
+
+const options = program.opts()
 
 function startFiglet(text) {
 
@@ -37,16 +45,15 @@ try {
 }
 
 
-// TODO Recieve name for the project
-let projectName = 'demo'
+const projectName = options.name ? options.name : 'demo'
 const zipFileName = 'starter.zip'
 
 // parameeter for spring initializer
-let baseDir = projectName
-let groupId = 'com.example'
-let artifactId = projectName
-let name = projectName
-let packageName = `${groupId}/${artifactId}`
+const baseDir = projectName
+const groupId = 'com.example'
+const artifactId = projectName
+const name = projectName
+const packageName = `${groupId}/${artifactId}`
 
 chalkAnimation.rainbow('Installing...').start()
 
@@ -77,7 +84,7 @@ console.log(`${zipFileName} is installed`);
 
 const unzipper = new admZip(zipFileName);
 chalkAnimation.rainbow('Unzipping...').start()
-unzipper.extractAllTo(projectName, true);
+unzipper.extractAllTo('.', true);
 console.log('finished unzip');
 fs.unlink(zipFilePath, (err) => {
     if (err) {
