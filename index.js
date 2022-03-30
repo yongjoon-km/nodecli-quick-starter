@@ -36,21 +36,24 @@ try {
     console.log('error')
 }
 
-// baseDir = demo
-// groupId = com.example
-// artifactId = demo
-// name = demo
-// packageName groupId + artifactId
 
 // TODO Recieve name for the project
 let projectName = 'demo'
 const zipFileName = 'starter.zip'
+
+// parameeter for spring initializer
+let baseDir = projectName
+let groupId = 'com.example'
+let artifactId = projectName
+let name = projectName
+let packageName = `${groupId}/${artifactId}`
 
 chalkAnimation.rainbow('Installing...').start()
 
 const response = await axios({
     method: 'GET',
     url: `https://start.spring.io/${zipFileName}`,
+    params: {groupId, baseDir, artifactId, name, packageName},
     responseType: 'stream'
 })
 
