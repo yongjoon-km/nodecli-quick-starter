@@ -17,32 +17,31 @@ program
 program.parse();
 
 const options = program.opts();
+const projectName = options.name ? options.name : "demo";
+const isInteractive = options.interactive ? true : false;
+const springInitializerParam = {
+  baseDir: projectName,
+  groupId: "com.example",
+  artifactId: projectName,
+  name: projectName,
+  packageName: `com.example"/${projectName}`
+}
 
 await renderLogo("Quick Starter");
 
-const projectName = options.name ? options.name : "demo";
-const isInteractive = options.interactive ? true : false;
-
 if (isInteractive) {
   const language = await chooseLanguage();
-  console.log(language)
+  springInitializerParam.language = language
 }
 
 const zipFileName = "starter.zip";
-
-// parameeter for spring initializer
-const baseDir = projectName;
-const groupId = "com.example";
-const artifactId = projectName;
-const name = projectName;
-const packageName = `${groupId}/${artifactId}`;
 
 chalkAnimation.rainbow("Installing...").start();
 
 const response = await axios({
   method: "GET",
   url: `https://start.spring.io/${zipFileName}`,
-  params: { groupId, baseDir, artifactId, name, packageName },
+  params: springInitializerParam,
   responseType: "stream",
 });
 
