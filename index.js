@@ -11,6 +11,8 @@ import inputProjectName from "./interactive-view/project-name.js";
 
 program
   .option("-n, --name <name>", "name of the project")
+  .option("-l, --language [java, kotlin, groovy]", "programming language")
+  .option("-p, --package-management [maven, gradle]", "package management tool")
   .option("-i, --interactive", "interactive mode");
 
 program.parse();
@@ -24,6 +26,17 @@ await renderLogo("Quick Starter");
 if (options.name) {
   const { name: projectName } = options;
   springInitializerParamBuilder.projectName(projectName);
+}
+
+if (options.language) {
+  const { language } = options;
+  springInitializerParamBuilder.language(language);
+}
+
+if (options.packageManagement) {
+  const { packageManagement } = options;
+  const packageManagementTool = `${packageManagement}-project`
+  springInitializerParamBuilder.projectManagementTool(packageManagementTool)
 }
 
 if (isInteractive) {
