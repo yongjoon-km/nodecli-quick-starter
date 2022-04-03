@@ -3,8 +3,8 @@ export default class SpringInitializerParamBuilder {
   #language;
   #projectManagementTool;
 
-  name(name) {
-    this.#projectName = name;
+  projectName(projectName) {
+    this.#projectName = projectName;
   }
 
   language(language) {

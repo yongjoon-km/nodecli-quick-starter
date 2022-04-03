@@ -5,6 +5,7 @@ import choosePackageManagement from "./interactive-view/package-management.js";
 import installSpringBoot from "./service/springBootInstaller.js";
 import renderLogo from "./view/figlet-wrapper.js";
 import SpringInitializerParamBuilder from "./model/SpringInitializerParamBuilder.js";
+import inputProjectName from "./interactive-view/project-name.js";
 
 // dependencies https://start.spring.io/dependencies
 
@@ -22,17 +23,20 @@ await renderLogo("Quick Starter");
 
 if (options.name) {
   const { name: projectName } = options;
-  springInitializerParamBuilder.name(projectName)
+  springInitializerParamBuilder.projectName(projectName);
 }
 
 if (isInteractive) {
+  const projectName = await inputProjectName();
+  springInitializerParamBuilder.projectName(projectName);
+
   const language = await chooseLanguage();
-  springInitializerParamBuilder.language(language)
+  springInitializerParamBuilder.language(language);
 
   const packageManagementTool = await choosePackageManagement();
-  springInitializerParamBuilder.projectManagementTool(packageManagementTool)
+  springInitializerParamBuilder.projectManagementTool(packageManagementTool);
 }
 
-const springInitializerParam = springInitializerParamBuilder.build()
+const springInitializerParam = springInitializerParamBuilder.build();
 
 installSpringBoot(springInitializerParam);
