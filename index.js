@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import chalkAnimation from "chalk-animation";
 import axios from "axios";
-import path, { resolve } from "path";
+import path from "path";
 import fs from "fs";
-import chalk from "chalk";
 import admZip from "adm-zip";
 import { program } from "commander";
 import chooseLanguage from './interactive-view/language.js'
