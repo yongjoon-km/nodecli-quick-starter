@@ -9,10 +9,13 @@ import fs from "fs";
 import chalk from "chalk";
 import admZip from "adm-zip";
 import { program } from "commander";
+import chooseLanguage from './interactive-view/language.js'
 
 // dependencies https://start.spring.io/dependencies
 
-program.option("-n, --name <name>", "name of the project");
+program
+  .option("-n, --name <name>", "name of the project")
+  .option("-i, --interactive", "interactive mode");
 
 program.parse();
 
@@ -41,6 +44,13 @@ try {
 }
 
 const projectName = options.name ? options.name : "demo";
+const isInteractive = options.interactive ? true : false;
+
+if (isInteractive) {
+  const language = await chooseLanguage();
+  console.log(language)
+}
+
 const zipFileName = "starter.zip";
 
 // parameeter for spring initializer
