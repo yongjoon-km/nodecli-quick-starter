@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-import figlet from "figlet";
-
 import chalkAnimation from "chalk-animation";
 import axios from "axios";
 import path, { resolve } from "path";
@@ -10,6 +7,7 @@ import chalk from "chalk";
 import admZip from "adm-zip";
 import { program } from "commander";
 import chooseLanguage from './interactive-view/language.js'
+import renderLogo from './view/figlet-wrapper.js'
 
 // dependencies https://start.spring.io/dependencies
 
@@ -21,27 +19,7 @@ program.parse();
 
 const options = program.opts();
 
-function startFiglet(text) {
-  return new Promise((res, rej) => {
-    figlet(text, (err, data) => {
-      if (err) {
-        console.log("Oops... something went wrong...");
-        console.dir(err);
-        rej("error");
-        return;
-      }
-      console.log(data);
-      res("done");
-      return;
-    });
-  });
-}
-
-try {
-  await startFiglet("Starter");
-} catch {
-  console.log("error");
-}
+await renderLogo("Quick Starter");
 
 const projectName = options.name ? options.name : "demo";
 const isInteractive = options.interactive ? true : false;
