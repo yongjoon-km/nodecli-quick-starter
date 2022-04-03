@@ -4,6 +4,7 @@ import chooseLanguage from "./interactive-view/language.js";
 import choosePackageManagement from "./interactive-view/package-management.js";
 import installSpringBoot from "./service/springBootInstaller.js";
 import renderLogo from "./view/figlet-wrapper.js";
+import SpringInitializerParamBuilder from "./model/SpringInitializerParamBuilder.js";
 
 // dependencies https://start.spring.io/dependencies
 
@@ -15,30 +16,23 @@ program.parse();
 
 const options = program.opts();
 const isInteractive = options.interactive ? true : false;
-const springInitializerParam = {
-  baseDir: "demo",
-  groupId: "com.example",
-  artifactId: "demo",
-  name: "demo",
-  packageName: "com.example/demo",
-};
-
-if (options.name) {
-  const { name: projectName } = options;
-  springInitializerParam.name = projectName;
-  springInitializerParam.baseDir = projectName;
-  springInitializerParam.artifactId = projectName;
-  springInitializerParam.packageName = `${springInitializerParam.groupId}/${projectName}`;
-}
+const springInitializerParamBuilder = new SpringInitializerParamBuilder();
 
 await renderLogo("Quick Starter");
 
+if (options.name) {
+  const { name: projectName } = options;
+  springInitializerParamBuilder.name(projectName)
+}
+
 if (isInteractive) {
   const language = await chooseLanguage();
-  springInitializerParam.language = language;
+  springInitializerParamBuilder.language(language)
 
   const packageManagementTool = await choosePackageManagement();
-  springInitializerParam.type = packageManagementTool;
+  springInitializerParamBuilder.projectManagementTool(packageManagementTool)
 }
+
+const springInitializerParam = springInitializerParamBuilder.build()
 
 installSpringBoot(springInitializerParam);
