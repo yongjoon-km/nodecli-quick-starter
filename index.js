@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { program } from "commander";
 import chooseLanguage from "./interactive-view/language.js";
+import choosePackageManagement from "./interactive-view/package-management.js";
 import installSpringBoot from "./service/springBootInstaller.js";
 import renderLogo from "./view/figlet-wrapper.js";
 
@@ -35,6 +36,9 @@ await renderLogo("Quick Starter");
 if (isInteractive) {
   const language = await chooseLanguage();
   springInitializerParam.language = language;
+
+  const packageManagementTool = await choosePackageManagement();
+  springInitializerParam.type = packageManagementTool;
 }
 
 installSpringBoot(springInitializerParam);
