@@ -2,6 +2,7 @@ export default class SpringInitializerParamBuilder {
   #projectName = "demo";
   #language;
   #projectManagementTool;
+  #dependencies;
 
   projectName(projectName) {
     this.#projectName = projectName;
@@ -15,6 +16,10 @@ export default class SpringInitializerParamBuilder {
     this.#projectManagementTool = projectManagementTool;
   }
 
+  dependencies(dependencies) {
+    this.#dependencies = dependencies;
+  }
+
   build() {
     return {
       baseDir: this.#projectName,
@@ -23,7 +28,8 @@ export default class SpringInitializerParamBuilder {
       name: this.#projectName,
       packageName: `com.example/${this.#projectName}`,
       language: this.#language,
-      type: this.#projectManagementTool
+      type: this.#projectManagementTool,
+      dependencies: this.#dependencies ? this.#dependencies.join(',') : undefined
     };
   }
 }

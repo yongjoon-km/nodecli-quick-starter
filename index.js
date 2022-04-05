@@ -6,6 +6,7 @@ import installSpringBoot from "./service/springBootInstaller.js";
 import renderLogo from "./view/figlet-wrapper.js";
 import SpringInitializerParamBuilder from "./model/SpringInitializerParamBuilder.js";
 import inputProjectName from "./interactive-view/project-name.js";
+import chooseDependencies from "./interactive-view/dependency.js";
 
 // dependencies https://start.spring.io/dependencies
 
@@ -48,6 +49,9 @@ if (isInteractive) {
 
   const packageManagementTool = await choosePackageManagement();
   springInitializerParamBuilder.projectManagementTool(packageManagementTool);
+
+  const depedencies = await chooseDependencies();
+  springInitializerParamBuilder.dependencies(depedencies);
 }
 
 const springInitializerParam = springInitializerParamBuilder.build();
