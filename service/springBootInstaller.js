@@ -4,7 +4,7 @@ import fs from "fs";
 import admZip from "adm-zip";
 import fetchSpringBootInstaller from "../client/springBootFetcher.js";
 
-const SPRING_STARTER_ZIP_FILE = "starter.zip"
+const SPRING_STARTER_ZIP_FILE = "starter.zip";
 
 async function installSpringBoot(springInitializerParam) {
   const zipFilePath = path.resolve(process.cwd(), ".", SPRING_STARTER_ZIP_FILE);
@@ -21,7 +21,7 @@ async function installSpringBoot(springInitializerParam) {
   // unzip the starter.zip (extract spring boot source code)
   const unzipper = new admZip(SPRING_STARTER_ZIP_FILE);
   chalkAnimation.rainbow("Unzipping...").start();
-  unzipper.extractAllTo(".", true);
+  unzipper.extractAllTo(".", true, true);
   console.log("finished unzip");
 
   // remove starter.zip
@@ -35,15 +35,15 @@ async function installSpringBoot(springInitializerParam) {
 }
 
 function download(writeStream) {
-    return new Promise((res, rej) => {
-      writeStream.on("finish", () => {
-        res("done");
-      });
-      writeStream.on("error", (error) => {
-        console.log(error);
-        rej("error");
-      });
+  return new Promise((res, rej) => {
+    writeStream.on("finish", () => {
+      res("done");
     });
-  }
+    writeStream.on("error", (error) => {
+      console.log(error);
+      rej("error");
+    });
+  });
+}
 
 export default installSpringBoot;
